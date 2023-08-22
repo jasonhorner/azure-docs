@@ -277,6 +277,8 @@ When the processor and available RAM aren't well utilized, but the execution of 
 
 :::image type="content" source="media/create-self-hosted-integration-runtime/scale-up-self-hosted-IR.png" alt-text="Increase the number of concurrent jobs that can run on a node":::
 
+[!NOTE] The maximun number of concurrent jobs for a self-hosted integration run time is currently 24.
+
 ### TLS/SSL certificate requirements
 
  If you want to enable remote access from intranet with TLS/SSL certificate (Advanced) to secure communication between integration runtime nodes, you can follow steps in [Enable remote access from intranet with TLS/SSL certificate](tutorial-enable-remote-access-intranet-tls-ssl-certificate.md).
