@@ -1,17 +1,17 @@
 ---
-title: Search and filter groups members and owners (preview) - Azure Active Directory | Microsoft Docs
+title: Search and filter groups members and owners (preview)
 description: Search and filter groups members and owners in the Azure portal.
 services: active-directory
 documentationcenter: ''
-author: curtand
-manager: karenhoran
+author: barclayn
+manager: amycolannino
 
 ms.service: active-directory
 ms.subservice: enterprise-users
 ms.workload: identity
 ms.topic: how-to
-ms.date: 10/22/2021
-ms.author: curtand
+ms.date: 06/24/2022
+ms.author: barclayn
 ms.reviewer: jodah
 
 ms.custom: it-pro
@@ -20,7 +20,7 @@ ms.collection: M365-identity-device-management
 
 # Search groups and members in Azure Active Directory
 
-This article tells you how to search for members and owners of a group and how to use search filters the Azure Active Directory (Azure AD) portal. Search functions for groups include:
+This article tells you how to search for members and owners of a group and how to use search filters in the portal for Azure Active Directory (Azure AD), part of Microsoft Entra. Search functions for groups include:
 
 - Groups search capabilities, such as substring search in group names
 - Filtering and sorting options on member and owner lists
@@ -64,11 +64,11 @@ The group **Overview** page provides member counts for groups. You can see the t
 
 These articles provide additional information on working with groups in Azure AD.
 
-- [View your groups and members](../fundamentals/active-directory-groups-view-azure-portal.md)
-- [Manage group membership](../fundamentals/active-directory-groups-membership-azure-portal.md)
+- [View your groups and members](../fundamentals/groups-view-azure-portal.md)
+- [Manage group membership](../fundamentals/how-to-manage-groups.md)
 - [Manage dynamic rules for users in a group](groups-create-rule.md)
-- [Edit your group settings](../fundamentals/active-directory-groups-settings-azure-portal.md)
-- [Manage access to resources using groups](../fundamentals/active-directory-manage-groups.md)
+- [Edit your group settings](../fundamentals/how-to-manage-groups.md)
+- [Manage access to resources using groups](../fundamentals/concept-learn-about-groups.md)
 - [Manage access to SaaS apps using groups](groups-saasapps.md)
 - [Manage groups using PowerShell commands](../enterprise-users/groups-settings-v2-cmdlets.md)
-- [Add an Azure subscription to Azure Active Directory](../fundamentals/active-directory-how-subscriptions-associated-directory.md)
+- [Add an Azure subscription to Azure Active Directory](../fundamentals/how-subscriptions-associated-directory.md)

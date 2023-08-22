@@ -1,35 +1,45 @@
 ---
 title: Overview of Azure Resource Graph
 description: Understand how the Azure Resource Graph service enables complex querying of resources at scale across subscriptions and tenants.
-ms.date: 08/17/2021
+ms.date: 08/15/2023
 ms.topic: overview
+ms.custom: devx-track-arm-template
+ms.author: davidsmatlak
+author: davidsmatlak
 ---
 # What is Azure Resource Graph?
 
-Azure Resource Graph is a service in Azure that is designed to extend Azure Resource Management by
+Azure Resource Graph is an Azure service designed to extend Azure Resource Management by
 providing efficient and performant resource exploration with the ability to query at scale across a
 given set of subscriptions so that you can effectively govern your environment. These queries
-provide the following features:
+provide the following abilities:
 
-- Ability to query resources with complex filtering, grouping, and sorting by resource properties.
-- Ability to iteratively explore resources based on governance requirements.
-- Ability to assess the impact of applying policies in a vast cloud environment.
-- Ability to [detail changes made to resource properties](./how-to/get-resource-changes.md)
-  (preview).
+- Query resources with complex filtering, grouping, and sorting by resource properties.
+- Explore resources iteratively based on governance requirements.
+- Assess the impact of applying policies in a vast cloud environment.
+- [Query changes made to resource properties](./how-to/get-resource-changes.md).
 
-In this documentation, you'll go over each feature in detail.
+In this documentation, you review each feature in detail.
 
 > [!NOTE]
-> Azure Resource Graph powers Azure portal's search bar, the new browse 'All resources' experience,
+> Azure Resource Graph powers Azure portal's search bar, the new browse **All resources** experience,
 > and Azure Policy's [Change history](../policy/how-to/determine-non-compliance.md#change-history)
 > _visual diff_. It's designed to help customers manage large-scale environments.
 
 [!INCLUDE [azure-lighthouse-supported-service](../../../includes/azure-lighthouse-supported-service.md)]
 
-## How does Resource Graph complement Azure Resource Manager
+## How Resource Graph complements Azure Resource Manager
 
-Resource Manager currently supports queries over basic resource fields, specifically - Resource
-name, ID, Type, Resource Group, Subscription, and Location. Resource Manager also provides
+Azure Resource Manager currently supports queries over basic resource fields, specifically:
+
+- Resource name
+- ID
+- Type
+- Resource Group
+- Subscription
+- Location
+
+Azure Resource Manager also provides
 facilities for calling individual resource providers for detailed properties one resource at a time.
 
 With Azure Resource Graph, you can access these properties the resource providers return without
@@ -42,13 +52,13 @@ With Azure Resource Graph, you can:
 
 - Access the properties returned by resource providers without needing to make individual calls to
   each resource provider.
-- View the last 14 days of change history made to the resource to see what properties changed and
-  when. (preview)
+- View the last 14 days of resource configuration changes to see which properties changed and
+  when.
 
 > [!NOTE]
 > As a _preview_ feature, some `type` objects have additional non-Resource Manager properties
 > available. For more information, see
-> [Extended properties (preview)](./concepts/query-language.md#extended-properties).
+> [Extended properties](./concepts/query-language.md#extended-properties).
 
 ## How Resource Graph is kept current
 
@@ -58,7 +68,7 @@ ensures that Resource Graph data is current if there are missed notifications or
 updated outside of Resource Manager.
 
 > [!NOTE]
-> Resource Graph uses a `GET` to the latest non-preview API of each resource provider to gather
+> Resource Graph uses a `GET` to the latest non-preview application programming interface (API) of each resource provider to gather
 > properties and values. As a result, the property expected may not be available. In some cases, the
 > API version used has been overridden to provide more current or widely used properties in the
 > results. See the [Show API version for each resource type](./samples/advanced.md#apiversion)
@@ -70,7 +80,7 @@ Now that you have a better understanding of what Azure Resource Graph is, let's 
 construct queries.
 
 It's important to understand that Azure Resource Graph's query language is based on the
-[Kusto query language](/azure/data-explorer/data-explorer-overview) used by Azure Data Explorer.
+[Kusto Query Language (KQL)](/azure/data-explorer/data-explorer-overview) used by Azure Data Explorer.
 
 First, for details on operations and functions that can be used with Azure Resource Graph, see
 [Resource Graph query language](./concepts/query-language.md). To browse resources, see
@@ -78,26 +88,26 @@ First, for details on operations and functions that can be used with Azure Resou
 
 ## Permissions in Azure Resource Graph
 
-To use Resource Graph, you must have appropriate rights in [Azure role-based access
-control (Azure RBAC)](../../role-based-access-control/overview.md) with at least read access to the
-resources you want to query. Without at least `read` permissions to the Azure object or object
-group, results won't be returned.
+To use Resource Graph, you must have appropriate rights in [Azure role-based access control (Azure
+RBAC)](../../role-based-access-control/overview.md) with at least `read` access to the resources you
+want to query. No results are returned if you don't have at least `read` permissions to the Azure
+object or object group.
 
 > [!NOTE]
 > Resource Graph uses the subscriptions available to a principal during login. To see resources of a
 > new subscription added during an active session, the principal must refresh the context. This
 > action happens automatically when logging out and back in.
 
-Azure CLI and Azure PowerShell use subscriptions that the user has access to. When using REST API
-directly, the subscription list is provided by the user. If the user has access to any of the
+Azure CLI and Azure PowerShell use subscriptions that the user has access to. When you use a REST
+API, the subscription list is provided by the user. If the user has access to any of the
 subscriptions in the list, the query results are returned for the subscriptions the user has access
-to. This behavior is the same as when calling
-[Resource Groups - List](/rest/api/resources/resourcegroups/list) \- you get resource groups you've
-access to without any indication that the result may be partial. If there are no subscriptions in
-the subscription list that the user has appropriate rights to, the response is a _403_ (Forbidden).
+to. This behavior is the same as when calling [Resource Groups - List](/rest/api/resources/resourcegroups/list)
+because you get resource groups that you can access, without any indication that the result may be
+partial. If there are no subscriptions in the subscription list that the user has appropriate rights
+to, the response is a _403_ (Forbidden).
 
 > [!NOTE]
-> In the **preview** REST API version `2020-04-01-preview`, the subscription list may be ommitted.
+> In the **preview** REST API version `2020-04-01-preview`, the subscription list may be omitted.
 > When both the `subscriptions` and `managementGroupId` properties aren't defined in the request,
 > the _scope_ is set to the tenant. For more information, see
 > [Scope of the query](./concepts/query-language.md#query-scope).
@@ -106,9 +116,9 @@ the subscription list that the user has appropriate rights to, the response is a
 
 As a free service, queries to Resource Graph are throttled to provide the best experience and
 response time for all customers. If your organization wants to use the Resource Graph API for
-large-scale and frequent queries, use portal 'Feedback' from the
+large-scale and frequent queries, use portal **Feedback** from the
 [Resource Graph portal page](https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyMenuBlade/ResourceGraph).
-Provide your business case and select the 'Microsoft can email you about your feedback' checkbox in
+Provide your business case and select the **Microsoft can email you about your feedback** checkbox in
 order for the team to contact you.
 
 Resource Graph throttles queries at the user level. The service response contains the following HTTP

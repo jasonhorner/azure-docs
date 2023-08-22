@@ -1,14 +1,13 @@
 ---
 title: 'Tutorial: Build a machine learning app with Apache Spark MLlib'
 description: A tutorial on how to use Apache Spark MLlib to create a machine learning app that analyzes a dataset by using classification through logistic regression.
-services: synapse-analytics
-author: jasonwhowell
+author: NelGson
 ms.service:  synapse-analytics
 ms.reviewer: sngun 
 ms.topic: tutorial
 ms.subservice: machine-learning
-ms.date: 04/15/2020
-ms.author: jasonh
+ms.date: 02/15/2022
+ms.author: negust
 ms.custom: subject-rbac-steps
 
 ---
@@ -250,7 +249,7 @@ After you finish running the application, shut down the notebook to release the 
 
 ## Next steps
 
-- [.NET for Apache Spark documentation](/dotnet/spark)
+- [.NET for Apache Spark documentation](/previous-versions/dotnet/spark/what-is-apache-spark-dotnet)
 - [Azure Synapse Analytics](../index.yml)
 - [Apache Spark official documentation](https://spark.apache.org/docs/2.4.5/)
 

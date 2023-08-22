@@ -1,6 +1,6 @@
 ---
 author: tamram
-ms.service: storage
+ms.service: azure-storage
 ms.topic: include
 ms.date: 10/26/2018
 ms.author: tamram
@@ -13,5 +13,6 @@ ms.author: tamram
 > * [PHP](../articles/cosmos-db/table-storage-how-to-use-php.md)
 > * [Ruby](../articles/cosmos-db/table-storage-how-to-use-ruby.md)
 > * [Python](../articles/cosmos-db/table-storage-how-to-use-python.md)
+> * [Go](../articles/cosmos-db/table-storage-how-to-use-go.md)
 > 
 >

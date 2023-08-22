@@ -3,12 +3,12 @@ title: SAML single sign-on for on-premises apps with Azure Active Directory Appl
 description: Learn how to provide single sign-on for on-premises applications that are secured with SAML authentication. Provide remote access to on-premises apps with Application Proxy.
 services: active-directory
 author: kenwith
-manager: karenhoran
+manager: amycolannino
 ms.service: active-directory
 ms.subservice: app-proxy
 ms.workload: identity
 ms.topic: how-to
-ms.date: 04/27/2021
+ms.date: 11/17/2022
 ms.author: kenwith
 ms.reviewer: ashishj
 ---
@@ -38,7 +38,7 @@ The protocol diagrams below describe the single sign-on sequence for both a serv
 
 4. Select **SAML** as the single sign-on method.
 
-5. First set up SAML SSO to work while on the corporate network, see the basic SAML configuration section of [Configure SAML-based single sign-on](../manage-apps/configure-saml-single-sign-on.md) to configure SAML-based authentication for the application.
+5. First set up SAML SSO to work while on the corporate network, see the basic SAML configuration section of [Configure SAML-based single sign-on](../develop/single-sign-on-saml-protocol.md) to configure SAML-based authentication for the application.
 
 6. Add at least one user to the application and make sure the test account has access to the application. While connected to the corporate network, use the test account to see if you have single sign-on to the application. 
 

@@ -4,7 +4,7 @@ description: Recommendations on when to use user-assigned versus system-assigned
 services: active-directory
 documentationcenter: 
 author: barclayn
-manager: karenhoran
+manager: amycolannino
 editor: 
 ms.service: active-directory
 ms.subservice: msi
@@ -24,7 +24,7 @@ ms.author: barclayn
 
 User-assigned managed identities are more efficient in a broader range of scenarios than system-assigned managed identities. See the table below for some scenarios and the recommendations for user-assigned or system-assigned.
 
-User-assigned identities can be used by multiple resources, and their life cycles are decoupled from the resources’ life cycles with which they’re associated. [Read which resources support managed identities](./services-support-managed-identities.md).
+User-assigned identities can be used by multiple resources, and their life cycles are decoupled from the resources’ life cycles with which they’re associated. [Read which resources support managed identities](./managed-identities-status.md).
 
 This life cycle allows you to separate your resource creation and identity administration responsibilities. User-assigned identities and their role assignments can be configured in advance of the resources that require them. Users who create the resources only require the access to assign a user-assigned identity, without the need to create new identities or role assignments. 	
 
@@ -75,7 +75,7 @@ In the example below, “Virtual Machine 4” has both a user-assigned identity,
 
 ## Limits 
 
-View the limits for [managed identities](../../azure-resource-manager/management/azure-subscription-service-limits.md#azure-rbac-limits)
+View the limits for [managed identities](../../azure-resource-manager/management/azure-subscription-service-limits.md#managed-identity-limits)
 and for [custom roles and role assignments](../../azure-resource-manager/management/azure-subscription-service-limits.md#azure-rbac-limits).
 
 ## Follow the principle of least privilege when granting access
@@ -102,13 +102,19 @@ You'll need to manually delete a user-assigned identity when it's no longer requ
 Role assignments aren't automatically deleted when either system-assigned or user-assigned managed identities are deleted. These role assignments should be manually deleted so the limit of role assignments per subscription isn't exceeded. 
 
 Role assignments that are associated with deleted managed identities
-will be displayed with “Identity not found” when viewed in the portal. [Read more](../../role-based-access-control/troubleshooting.md#role-assignments-with-identity-not-found).
+will be displayed with “Identity not found” when viewed in the portal. [Read more](../../role-based-access-control/troubleshooting.md#symptom---role-assignments-with-identity-not-found).
 
 :::image type="content" source="media/managed-identity-best-practice-recommendations/identity-not-found.png" alt-text="Identity not found for role assignment.":::
 
+Role assignments which are no longer associated with a user or service principal will appear with an `ObjectType` value of `Unknown`. In order to remove them, you can pipe several Azure PowerShell commands together to first get all the role assignments, filter to only those with an `ObjectType` value of `Unknown` and then remove those role assignments from Azure.
+
+```azurepowershell
+Get-AzRoleAssignment | Where-Object {$_.ObjectType -eq "Unknown"} | Remove-AzRoleAssignment 
+```
+
 ## Limitation of using managed identities for authorization
 
-Using Azure AD **groups** for granting access to services is a great way to simplify the authorization process. The idea is simple – grant permissions to a group and add identities to the group so that they inherit the same permissions. This is a well-established pattern from various on-premises systems and works well when the identities represent users. Another option to control authorization in Azure AD is by using [App Roles](../develop/howto-add-app-roles-in-azure-ad-apps.md), which allows you to declare **roles** that are specific to an app (rather than groups, which are a global concept in the directory). You can then [assign app roles to managed identities](how-to-assign-app-role-managed-identity-powershell.md) (as well as users or groups).
+Using Azure AD **groups** for granting access to services is a great way to simplify the authorization process. The idea is simple – grant permissions to a group and add identities to the group so that they inherit the same permissions. This is a well-established pattern from various on-premises systems and works well when the identities represent users. Another option to control authorization in Azure AD is by using [App Roles](../develop/howto-add-app-roles-in-apps.md), which allows you to declare **roles** that are specific to an app (rather than groups, which are a global concept in the directory). You can then [assign app roles to managed identities](how-to-assign-app-role-managed-identity-powershell.md) (as well as users or groups).
 
 In both cases, for non-human identities such as Azure AD Applications and Managed identities, the exact mechanism of how this authorization information is presented to the application is not ideally suited today. Today's implementation with Azure AD and Azure Role Based Access Control (Azure RBAC) uses access tokens issued by Azure AD for authentication of each identity. If the identity is added to a group or role, this is expressed as claims in the access token issued by Azure AD. Azure RBAC uses these claims to further evaluate the authorization rules for allowing or denying access.
 

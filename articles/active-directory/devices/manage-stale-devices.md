@@ -1,21 +1,21 @@
 ---
-title: How to manage stale devices in Azure AD | Microsoft Docs
+title: How to manage stale devices in Azure AD
 description: Learn how to remove stale devices from your database of registered devices in Azure Active Directory.
 
 services: active-directory
 ms.service: active-directory
 ms.subservice: devices
+ms.custom: has-azure-ad-ps-ref
 ms.topic: how-to
-ms.date: 02/07/2022
+ms.date: 09/27/2022
 
 ms.author: joflore
 author: MicrosoftGuyJFlo
-manager: karenhoran
+manager: amycolannino
 ms.reviewer: spunukol
 
-#Customer intent: As an IT admin, I want to understand how I can get rid of stale devices, so that I can I can cleanup my device registration data.
-
 ms.collection: M365-identity-device-management
+#Customer intent: As an IT admin, I want to understand how I can get rid of stale devices, so that I can I can cleanup my device registration data.
 ---
 # How To: Manage stale devices in Azure AD
 
@@ -41,8 +41,8 @@ Because a stale device is defined as a registered device that hasn't been used t
 
 The evaluation of the activity timestamp is triggered by an authentication attempt of a device. Azure AD evaluates the activity timestamp when:
 
-- A Conditional Access policies requiring [managed devices](../conditional-access/require-managed-devices.md) or [approved client apps](../conditional-access/app-based-conditional-access.md) has been triggered.
-- Windows 10 devices that are either Azure AD joined or hybrid Azure AD joined are active on the network. 
+- A Conditional Access policies requiring [managed devices](../conditional-access/concept-conditional-access-grant.md) or [approved client apps](../conditional-access/howto-policy-approved-app-or-app-protection.md) has been triggered.
+- Windows 10 or newer devices that are either Azure AD joined or hybrid Azure AD joined are active on the network. 
 - Intune managed devices have checked in to the service.
 
 If the delta between the existing value of the activity timestamp and the current value is more than 14 days (+/-5 day variance), the existing value is replaced with the new value.
@@ -51,17 +51,20 @@ If the delta between the existing value of the activity timestamp and the curren
 
 You have two options to retrieve the value of the activity timestamp:
 
-- The **Activity** column on the [devices page](https://portal.azure.com/#blade/Microsoft_AAD_IAM/DevicesMenuBlade/Devices) in the Azure portal
+- The **Activity** column on the [devices page](https://portal.azure.com/#blade/Microsoft_AAD_IAM/DevicesMenuBlade/Devices).
 
-    :::image type="content" source="./media/manage-stale-devices/01.png" alt-text="Screenshot of a page in the Azure portal listing the name, owner, and other information on devices. One column lists the activity time stamp." border="false":::
+    :::image type="content" source="./media/manage-stale-devices/01.png" alt-text="Screenshot listing the name, owner, and other information of devices. One column lists the activity time stamp." border="false":::
 
-- The [Get-AzureADDevice](/powershell/module/azuread/Get-AzureADDevice) cmdlet
+- The [Get-AzureADDevice](/powershell/module/azuread/Get-AzureADDevice) cmdlet.
 
     :::image type="content" source="./media/manage-stale-devices/02.png" alt-text="Screenshot showing command-line output. One line is highlighted and lists a time stamp for the ApproximateLastLogonTimeStamp value." border="false":::
 
 ## Plan the cleanup of your stale devices
 
 To efficiently clean up stale devices in your environment, you should define a related policy. This policy helps you to ensure that you capture all considerations that are related to stale devices. The following sections provide you with examples for common policy considerations. 
+
+> [!CAUTION]
+> If your organization uses BitLocker drive encryption, you should ensure that BitLocker recovery keys are either backed up or no longer needed before deleting devices. Failure to do this may cause loss of data.
 
 ### Cleanup account
 
@@ -75,7 +78,7 @@ In your cleanup policy, select accounts that have the required roles assigned.
 
 ### Timeframe
 
-Define a timeframe that is your indicator for a stale device. When defining your timeframe, factor the window noted for updating the activity timestamp into your value. For example, you shouldn't consider a timestamp that is younger than 21 days (includes variance) as an indicator for a stale device. There are scenarios that can make a device look like stale while it isn't. For example, the owner of the affected device can be on vacation or on a sick leave.  that exceeds your timeframe for stale devices.
+Define a timeframe that is your indicator for a stale device. When defining your timeframe, factor the window noted for updating the activity timestamp into your value. For example, you shouldn't consider a timestamp that is younger than 21 days (includes variance) as an indicator for a stale device. There are scenarios that can make a device look like stale while it isn't. For example, the owner of the affected device can be on vacation or on a sick leave that exceeds your timeframe for stale devices.
 
 ### Disable devices
 
@@ -83,11 +86,11 @@ It isn't advisable to immediately delete a device that appears to be stale becau
 
 ### MDM-controlled devices
 
-If your device is under control of Intune or any other MDM solution, retire the device in the management system before disabling or deleting it.
+If your device is under control of Intune or any other MDM solution, retire the device in the management system before disabling or deleting it. For more information, see the article [Remove devices by using wipe, retire, or manually unenrolling the device](/mem/intune/remote-actions/devices-wipe).
 
 ### System-managed devices
 
-Don't delete system-managed devices. These devices are generally devices such as Autopilot. Once deleted, these devices can't be reprovisioned. The new `Get-AzureADDevice` cmdlet excludes system-managed devices by default. 
+Don't delete system-managed devices. These devices are generally devices such as Autopilot. Once deleted, these devices can't be reprovisioned.
 
 ### Hybrid Azure AD joined devices
 
@@ -95,14 +98,14 @@ Your hybrid Azure AD joined devices should follow your policies for on-premises 
 
 To clean up Azure AD:
 
-- **Windows 10 devices** - Disable or delete Windows 10 devices in your on-premises AD, and let Azure AD Connect synchronize the changed device status to Azure AD.
+- **Windows 10 or newer devices** - Disable or delete Windows 10 or newer devices in your on-premises AD, and let Azure AD Connect synchronize the changed device status to Azure AD.
 - **Windows 7/8** - Disable or delete Windows 7/8 devices in your on-premises AD first. You can't use Azure AD Connect to disable or delete Windows 7/8 devices in Azure AD. Instead, when you make the change in your on-premises, you must disable/delete in Azure AD.
 
 > [!NOTE]
 > - Deleting devices in your on-premises AD or Azure AD does not remove registration on the client. It will only prevent access to resources using device as an identity (e.g. Conditional Access). Read additional information on how to [remove registration on the client](faq.yml).
-> - Deleting a Windows 10 device only in Azure AD will re-synchronize the device from your on-premises using Azure AD connect but as a new object in "Pending" state. A re-registration is required on the device.
-> - Removing the device from sync scope for Windows 10/Server 2016 devices will delete the Azure AD device. Adding it back to sync scope will place a new object in "Pending" state. A re-registration of the device is required.
-> - If you are not using Azure AD Connect for Windows 10 devices to synchronize (e.g. ONLY using AD FS for registration), you must manage lifecycle similar to Windows 7/8 devices.
+> - Deleting a Windows 10 or newer device only in Azure AD will re-synchronize the device from your on-premises using Azure AD connect but as a new object in "Pending" state. A re-registration is required on the device.
+> - Removing the device from sync scope for Windows 10 or newer /Server 2016 devices will delete the Azure AD device. Adding it back to sync scope will place a new object in "Pending" state. A re-registration of the device is required.
+> - If you are not using Azure AD Connect for Windows 10 or newer devices to synchronize (e.g. ONLY using AD FS for registration), you must manage lifecycle similar to Windows 7/8 devices.
 
 ### Azure AD joined devices
 
@@ -147,13 +150,19 @@ $dt = (Get-Date).AddDays(-90)
 Get-AzureADDevice -All:$true | Where {$_.ApproximateLastLogonTimeStamp -le $dt} | select-object -Property AccountEnabled, DeviceId, DeviceOSType, DeviceOSVersion, DisplayName, DeviceTrustType, ApproximateLastLogonTimestamp | export-csv devicelist-olderthan-90days-summary.csv -NoTypeInformation
 ```
 
+> [!WARNING]
+> [Some active devices may have a blank time stamp.](#why-is-the-timestamp-not-updated-more-frequently)
+
 #### Set devices to disabled
 
 Using the same commands we can pipe the output to the set command to disable the devices over a certain age.
 
 ```powershell
 $dt = (Get-Date).AddDays(-90)
-Get-AzureADDevice -All:$true | Where {$_.ApproximateLastLogonTimeStamp -le $dt} | Set-AzureADDevice -AccountEnabled $false
+$Devices = Get-AzureADDevice -All:$true | Where {$_.ApproximateLastLogonTimeStamp -le $dt}
+foreach ($Device in $Devices) {
+Set-AzureADDevice -ObjectId $Device.ObjectId -AccountEnabled $false
+}
 ```
 
 ### Delete devices
@@ -167,19 +176,21 @@ Building on the [disable devices example](#disable-devices) we look for disabled
 
 ```powershell
 $dt = (Get-Date).AddDays(-120)
-$state = $false
-Get-AzureADDevice -All:$true | Where {($_.ApproximateLastLogonTimeStamp -le $dt) -and ($_.AccountEnabled -le $state)} | Remove-AzureADDevice
+$Devices = Get-AzureADDevice -All:$true | Where {($_.ApproximateLastLogonTimeStamp -le $dt) -and ($_.AccountEnabled -eq $false)}
+foreach ($Device in $Devices) {
+Remove-AzureADDevice -ObjectId $Device.ObjectId
+}
 ```
 
 ## What you should know
 
 ### Why is the timestamp not updated more frequently?
 
-The timestamp is updated to support device lifecycle scenarios. This attribute isn't an audit. Use the sign-in audit logs for more frequent updates on the device.
+The timestamp is updated to support device lifecycle scenarios. This attribute isn't an audit. Use the sign-in audit logs for more frequent updates on the device. Some active devices may have a blank time stamp.
 
 ### Why should I worry about my BitLocker keys?
 
-When configured, BitLocker keys for Windows 10 devices are stored on the device object in Azure AD. If you delete a stale device, you also delete the BitLocker keys that are stored on the device. Confirm that your cleanup policy aligns with the actual lifecycle of your device before deleting a stale device. 
+When configured, BitLocker keys for Windows 10 or newer devices are stored on the device object in Azure AD. If you delete a stale device, you also delete the BitLocker keys that are stored on the device. Confirm that your cleanup policy aligns with the actual lifecycle of your device before deleting a stale device. 
 
 ### Why should I worry about Windows Autopilot devices?
 
@@ -203,4 +214,6 @@ Any authentication where a device is being used to authenticate to Azure AD are 
 
 ## Next steps
 
-To get an overview of how to manage device in the Azure portal, see [managing devices using the Azure portal](device-management-azure-portal.md)
+Devices managed with Intune can be retired or wiped, for more information see the article [Remove devices by using wipe, retire, or manually unenrolling the device](/mem/intune/remote-actions/devices-wipe).
+
+To get an overview of how to manage devices, see [managing devices using the Azure portal](manage-device-identities.md)

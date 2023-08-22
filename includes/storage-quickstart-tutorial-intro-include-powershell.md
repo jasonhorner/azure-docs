@@ -1,6 +1,6 @@
 ---
 author: tamram
-ms.service: storage
+ms.service: azure-storage
 ms.topic: include
 ms.date: 10/26/2018
 ms.author: tamram 
@@ -37,10 +37,10 @@ Create a standard, general-purpose storage account with LRS replication by using
 ```azurepowershell-interactive
 $StorageHT = @{
   ResourceGroupName = $ResourceGroup
-  Name              = 'MyStorageAccount'
+  Name              = 'mystorageaccount'
   SkuName           = 'Standard_LRS'
   Location          =  $Location
 }
 $StorageAccount = New-AzStorageAccount @StorageHT
-$Ctx = $StorageAccount.Context
+$Context = $StorageAccount.Context
 ```

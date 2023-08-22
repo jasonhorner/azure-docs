@@ -35,7 +35,7 @@ Platform metrics and the Activity logs are collected automatically, whereas you 
 
 ## <a id="create-setting-portal"></a> Create diagnostic settings via the Azure portal
 
-1. Sign into the [Azure portal](https://portal.azure.com).
+1. Sign in to the [Azure portal](https://portal.azure.com).
 
 1. Navigate to your Azure Managed Instance for Apache Cassandra cluster resource. 
 
@@ -59,7 +59,7 @@ Platform metrics and the Activity logs are collected automatically, whereas you 
     :::image type="content" source="./media/azure-monitor/query.png" alt-text="Query logs":::
 
 ## <a id="create-setting-cli"></a> Create diagnostic setting via Azure CLI
-Use the [az monitor diagnostic-settings create](/cli/azure/monitor/diagnostic-settings#az_monitor_diagnostic_settings_create) command to create a diagnostic setting with the Azure CLI. See the documentation for this command for descriptions of its parameters.
+Use the [az monitor diagnostic-settings create](/cli/azure/monitor/diagnostic-settings#az-monitor-diagnostic-settings-create) command to create a diagnostic setting with the Azure CLI. See the documentation for this command for descriptions of its parameters.
 
 ```azurecli-interactive
     logs='[{"category":"CassandraAudit","enabled":true,"retentionPolicy":{"enabled":true,"days":3}},{"category":"CassandraLogs","enabled":true,"retentionPolicy":{"enabled":true,"days":3}}]'
@@ -135,7 +135,7 @@ Use the [Azure Monitor REST API](/rest/api/monitor/diagnosticsettings/createorup
 ## Audit whitelist
 
 > ![NOTE]
-> This article contains references to the term *whitelist*, a term that Microsoft no longer uses. When the term is removed from the software, we'll remove it from this article.
+> This article contains references to a term that Microsoft no longer uses. When the term is removed from the software, we'll remove it from this article.
 
 By default, audit logging creates a record for every login attempt and CQL query. The result can be rather overwhelming and increase overhead. You can use the audit whitelist feature in Cassandra 3.11 to set what operations *don't* create an audit record. The audit whitelist feature is enabled by default in Cassandra 3.11. To learn how to configure your whitelist, see [Role-based whitelist management](https://github.com/Ericsson/ecaudit/blob/release/c2.2/doc/role_whitelist_management.md). 
 

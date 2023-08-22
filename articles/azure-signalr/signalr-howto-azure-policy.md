@@ -3,8 +3,8 @@ title: Compliance using Azure Policy
 description: Assign built-in policies in Azure Policy to audit compliance of your Azure SignalR Service resources.
 author: vicancy
 ms.service: signalr
-ms.topic: conceptual
-ms.date: 06/17/2020
+ms.topic: how-to
+ms.date: 07/18/2022
 ms.author: lianwei
 ---
 
@@ -24,9 +24,9 @@ The following built-in policy definitions are specific to Azure SignalR Service:
 
 ## Assign policy definitions
 
-* Assign policy definitions using the [Azure portal](../governance/policy/assign-policy-portal.md), [Azure CLI](../governance/policy/assign-policy-azurecli.md), a [Resource Manager template](../governance/policy/assign-policy-template.md), or the Azure Policy SDKs.
-* Scope a policy assignment to a resource group, a subscription, or an [Azure management group](../governance/management-groups/overview.md). SignalR policy assignments apply to existing and new SignalR resources within the scope.
-* Enable or disable [policy enforcement](../governance/policy/concepts/assignment-structure.md#enforcement-mode) at any time.
+- Assign policy definitions using the [Azure portal](../governance/policy/assign-policy-portal.md), [Azure CLI](../governance/policy/assign-policy-azurecli.md), a [Resource Manager template](../governance/policy/assign-policy-template.md), or the Azure Policy SDKs.
+- Scope a policy assignment to a resource group, a subscription, or an [Azure management group](../governance/management-groups/overview.md). SignalR policy assignments apply to existing and new SignalR resources within the scope.
+- Enable or disable [policy enforcement](../governance/policy/concepts/assignment-structure.md#enforcement-mode) at any time.
 
 > [!NOTE]
 > After you assign or update a policy, it takes some time for the assignment to be applied to resources in the defined scope. See information about [policy evaluation triggers](../governance/policy/how-to/get-compliance-data.md#evaluation-triggers).
@@ -42,13 +42,14 @@ When a resource is non-compliant, there are many possible reasons. To determine 
 1. Select **All services**, and search for **Policy**.
 1. Select **Compliance**.
 1. Use the filters to limit compliance states or to search for policies
-   
-    [ ![Policy compliance in portal](./media/signalr-howto-azure-policy/azure-policy-compliance.png) ](./media/signalr-howto-azure-policy/azure-policy-compliance.png#lightbox)
-2. Select a policy to review aggregate compliance details and events. If desired, then select a specific SignalR for resource compliance.
+
+   [ ![Screenshot showing policy compliance in portal.](./media/signalr-howto-azure-policy/azure-policy-compliance.png) ](./media/signalr-howto-azure-policy/azure-policy-compliance.png#lightbox)
+
+1. Select a policy to review aggregate compliance details and events. If desired, then select a specific SignalR for resource compliance.
 
 ### Policy compliance in the Azure CLI
 
-You can also use the Azure CLI to get compliance data. For example, use the [az policy assignment list](/cli/azure/policy/assignment#az_policy_assignment_list) command in the CLI to get the policy IDs of the Azure SignalR Service policies that are applied:
+You can also use the Azure CLI to get compliance data. For example, use the [az policy assignment list](/cli/azure/policy/assignment#az-policy-assignment-list) command in the CLI to get the policy IDs of the Azure SignalR Service policies that are applied:
 
 ```azurecli
 az policy assignment list --query "[?contains(displayName,'SignalR')].{name:displayName, ID:id}" --output table
@@ -62,13 +63,13 @@ Name                                                                            
 [Preview]: Azure SignalR Service should use private links  /subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Authorization/policyAssignments/<assignmentId>
 ```
 
-Then run [az policy state list](/cli/azure/policy/state#az_policy_state_list) to return the JSON-formatted compliance state for all resources under a specific resource group:
+Then run [az policy state list](/cli/azure/policy/state#az-policy-state-list) to return the JSON-formatted compliance state for all resources under a specific resource group:
 
 ```azurecli
 az policy state list --g <resourceGroup>
 ```
 
-Or run [az policy state list](/cli/azure/policy/state#az_policy_state_list) to return the JSON-formatted compliance state of a specific SignalR resource:
+Or run [az policy state list](/cli/azure/policy/state#az-policy-state-list) to return the JSON-formatted compliance state of a specific SignalR resource:
 
 ```azurecli
 az policy state list \
@@ -79,12 +80,12 @@ az policy state list \
 
 ## Next steps
 
-* Learn more about Azure Policy [definitions](../governance/policy/concepts/definition-structure.md) and [effects](../governance/policy/concepts/effects.md)
+- Learn more about Azure Policy [definitions](../governance/policy/concepts/definition-structure.md) and [effects](../governance/policy/concepts/effects.md)
 
-* Create a [custom policy definition](../governance/policy/tutorials/create-custom-policy-definition.md)
+- Create a [custom policy definition](../governance/policy/tutorials/create-custom-policy-definition.md)
 
-* Learn more about [governance capabilities](../governance/index.yml) in Azure
-
+- Learn more about [governance capabilities](../governance/index.yml) in Azure
 
 <!-- LINKS - External -->
+
 [terms-of-use]: https://azure.microsoft.com/support/legal/preview-supplemental-terms/
