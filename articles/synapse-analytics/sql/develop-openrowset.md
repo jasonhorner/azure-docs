@@ -359,6 +359,7 @@ Parquet and Delta Lake files contain type descriptions for every column. The fol
 | INT64 |TIMESTAMP ([normalized to utc](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md#instant-semantics-timestamps-normalized-to-utc)) (MILLIS / MICROS) | datetime2 |
 | INT64 |TIMESTAMP ([not normalized to utc](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md#local-semantics-timestamps-not-normalized-to-utc)) (MILLIS / MICROS) | bigint - make sure that you explicitly adjust `bigint` value with the timezone offset before converting it to a datetime value. |
 | INT64 |TIMESTAMP (NANOS) | Not supported |
+| INT96 |TIMESTAMP | datetime2(7)
 |[Complex type](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md#lists) |LIST |varchar(8000), serialized into JSON |
 |[Complex type](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md#maps)|MAP|varchar(8000), serialized into JSON |
 
